@@ -1,0 +1,33 @@
+[build-system]
+requires = [
+    "hatchling",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "ucnhistory"
+authors  = [{name="Derek Fujimoto", email="dfujimoto@triumf.ca" }]
+description = "Read data from ucn history table"
+readme = "README.md"
+classifiers = [
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+        "Operating System :: POSIX :: Linux",
+]
+license = {file = "LICENSE"}
+requires-python = ">=3.7"
+dependencies = ['numpy',
+                'pandas',
+                'pymysql',
+                'keyring',
+                'sshtunnel',
+                ]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/ucn-triumf/ucnhistory"
+"Bug Tracker" = "https://github.com/ucn-triumf/ucnhistory/issues"
+
+# set version
+[tool.hatch.version]
+path = "ucnhistory/version.py"
