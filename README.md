@@ -17,3 +17,24 @@ which will install the files on the user's python path. One can then import the 
 ## Documentation and Examples
 
 [See here](docs/ucnhistory/ucnhistory.md)
+
+## Notes
+
+### Database access
+
+Note that access to the database requires the use of a password. This password should be stored in the python keyring in the following way:
+
+```python
+import keyring
+keyring.set_password("ucn_history", "ucn_reader", password)
+```
+
+The password should be obtained from someone within the group.
+
+### SSH access
+
+Access to the DAQ computer is provided by mean of an SSH tunnel. One should copy their public key for password-less access to the machine.
+
+```bash
+ssh-copy-id ucn@daq01.ucn.triumf.ca
+```
