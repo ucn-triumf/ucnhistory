@@ -6,10 +6,10 @@
 
 - [ucnhistory](#ucnhistory)
   - [ucnhistory](#ucnhistory-1)
-    - [ucnhistory().get_columns](#ucnhistory()get_columns)
-    - [ucnhistory().get_data](#ucnhistory()get_data)
-    - [ucnhistory().get_tables](#ucnhistory()get_tables)
-    - [ucnhistory().to_csv](#ucnhistory()to_csv)
+    - [ucnhistory.get\_columns](#ucnhistoryget_columns)
+    - [ucnhistory.get\_data](#ucnhistoryget_data)
+    - [ucnhistory.get\_tables](#ucnhistoryget_tables)
+    - [ucnhistory.to\_csv](#ucnhistoryto_csv)
 
 ## ucnhistory
 
@@ -55,7 +55,7 @@ class ucnhistory(object):
     def __init__(self): ...
 ```
 
-### ucnhistory().get_columns
+### ucnhistory.get_columns
 
 [Show source in ucnhistory.py:91](../../ucnhistory/ucnhistory.py#L91)
 
@@ -75,7 +75,7 @@ Get a list of the columns in a given table
 def get_columns(self, table): ...
 ```
 
-### ucnhistory().get_data
+### ucnhistory.get_data
 
 [Show source in ucnhistory.py:107](../../ucnhistory/ucnhistory.py#L107)
 
@@ -98,7 +98,7 @@ pd.DataFrame
 def get_data(self, table, columns=None, start=None, stop=None): ...
 ```
 
-### ucnhistory().get_tables
+### ucnhistory.get_tables
 
 [Show source in ucnhistory.py:187](../../ucnhistory/ucnhistory.py#L187)
 
@@ -115,7 +115,7 @@ database
 def get_tables(self): ...
 ```
 
-### ucnhistory().to_csv
+### ucnhistory.to_csv
 
 [Show source in ucnhistory.py:208](../../ucnhistory/ucnhistory.py#L208)
 
