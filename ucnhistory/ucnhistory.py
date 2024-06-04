@@ -54,7 +54,7 @@ class ucnhistory(object):
                                     ssh_username = self.ssh_config['user'],
                                     remote_bind_address=(self.sql_config['host'],
                                                          self.sql_config['port']))
-        except ValueError:
+        except (ValueError, pymysql.err.OperationalError):
             password = getpass(f'{self.ssh_config["user"]}@{self.ssh_config["host"]} password: ')
             self._tunnel = SSHTunnelForwarder((self.ssh_config['host'], self.ssh_config['port']),
                                     ssh_username = self.ssh_config['user'],
