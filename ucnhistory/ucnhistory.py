@@ -36,7 +36,7 @@ class ucnhistory(object):
                     break
     """
 
-    sql_config = {'host': '0.0.0.0',
+    sql_config = {'host': 'localhost',
                   'port': 3306,
                   'user': 'ucn_reader',
                   'database': 'ucn_history',
@@ -48,10 +48,19 @@ class ucnhistory(object):
                  }
 
     def __init__(self):
-        self._tunnel = SSHTunnelForwarder((self.ssh_config['host'], self.ssh_config['port']),
+
+        try:
+            self._tunnel = SSHTunnelForwarder((self.ssh_config['host'], self.ssh_config['port']),
                                     ssh_username = self.ssh_config['user'],
                                     remote_bind_address=(self.sql_config['host'],
                                                          self.sql_config['port']))
+        except ValueError:
+            password = getpass(f'{self.ssh_config["user"]}@{self.ssh_config["host"]} password: ')
+            self._tunnel = SSHTunnelForwarder((self.ssh_config['host'], self.ssh_config['port']),
+                                    ssh_username = self.ssh_config['user'],
+                                    remote_bind_address=(self.sql_config['host'],
+                                                         self.sql_config['port']),
+                                    ssh_password=password)
 
     def _date_parser(self, date=None):
         # Convert human-readable dates to datetime
