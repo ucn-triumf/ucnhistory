@@ -53,8 +53,15 @@ def main():
         print('\n'.join(tables))
 
     elif args.list_columns:
-        columns = uhist.get_columns(args.table)
-        print('\n'.join(columns))
+
+        if args.table is None:
+            print("Must define a table name")
+        else:
+            columns = uhist.get_columns(args.table)
+            print('\n'.join(columns))
+
+    elif args.table is None:
+        print("Must define a table name")
 
     else:
         uhist.get_data(args.table,
