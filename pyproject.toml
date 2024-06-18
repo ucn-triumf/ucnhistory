@@ -31,3 +31,9 @@ dynamic = ["version"]
 # set version
 [tool.hatch.version]
 path = "ucnhistory/version.py"
+
+[project.scripts]
+ucnhistory = "ucnhistory:main"
+
+[project.gui-scripts]
+ucnhistory = "ucnhistory:main"
