@@ -16,7 +16,48 @@ which will install the files on the user's python path. One can then import the 
 
 ## Documentation and Examples
 
-[See here](docs/ucnhistory/ucnhistory.md)
+### [See here for reference](docs/ucnhistory/ucnhistory.md)
+
+### Command line usage:
+
+Help message:
+
+```bash
+usage: ucnhistory [-h] [-t TABLE] [-s START] [-e END] [-o OUTPUT] [-lt] [-lc] [-c COLUMN]
+
+Fetch tables from ucn history SQL database to csv file
+
+options:
+  -h, --help            show this help message and exit
+  -t TABLE, --table TABLE
+                        Name of table from which to fetch
+  -s START, --start START
+                        Specify range start date and time
+  -e END, --end END     Specify range end date and time
+  -o OUTPUT, --output OUTPUT
+                        Specify name of output csv file
+  -lt, --list_tables    Display tables in database
+  -lc, --list_columns   Display columns in database table (must specify table)
+  -c COLUMN, --column COLUMN
+                        Fetch column from table, use multiple times to get multiple columns. If
+                        absent, fetch all columns
+```
+
+Some example usage:
+
+```bash
+# fetch an table from the past 24h nd save with default filename
+ucnhistory -t ucn2epics_measured
+
+# list all available tables
+ucnhistory -lt
+
+# list all columns in a table
+ucnhistory -lc -t ucn2epics_measured
+
+# get one table for a specified time period
+ucnhistory -t ucn2epics_measured -s 'June 6 2024 12pm' -e 'June 6 2024 1pm'
+```
 
 ## Notes
 
