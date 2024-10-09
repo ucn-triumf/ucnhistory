@@ -128,6 +128,10 @@ class ucnhistory(object):
 
         self.table = table
 
+        # check inputs
+        if type(columns) is str:
+            columns = [columns]
+
         # convert input to datetime
         date1 = self._date_parser(start)
         date2 = self._date_parser(stop)
@@ -186,8 +190,8 @@ class ucnhistory(object):
         df['time'] = pd.to_datetime(df['epoch_time'], unit='s')
 
         # account for timezone
-        df['time'] -= timedelta(hours=8)
         df.set_index('time', inplace=True)
+        df = df.tz_localize('UTC').tz_convert('America/Vancouver')
 
         self.df = df
 
