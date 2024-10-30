@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 from dateutil.parser import parse as dparse
 import pandas as pd
 import keyring
-import numpy as np
 from sshtunnel import SSHTunnelForwarder
 
 class ucnhistory(object):
@@ -157,28 +156,15 @@ class ucnhistory(object):
 
         # get cursor
         self._connect()
-        cur1 = self._connector.cursor()
 
         # get data
-        data = {}
-        for col in columns:
-            cur1.execute(f"SELECT {col} FROM {database}.{table} WHERE "+\
-                        f"_i_time >= {epoch1} and _i_time < {epoch2}")
-            try:
-                data[col] = np.array(cur1.fetchall())[:, 0]
-
-            # raised in the case of no data fetched
-            except IndexError:
-                raise IOError("No data found!")
-
-        # get timestamps
-        cur1.execute(f"SELECT _i_time FROM {database}.{table} WHERE "+\
-                f"_i_time >= {epoch1} and _i_time < {epoch2}")
-        data['epoch_time'] = np.array(cur1.fetchall())[:, 0]
+        cols = ', '.join(columns)
+        df = pd.read_sql_query(f'SELECT {cols} from {database}.{table} WHERE '+\
+                f"_i_time >= {epoch1} and _i_time < {epoch2}", self._connector)
         self._disconnect()
 
-        # make dataframe
-        df = pd.DataFrame(data)
+        # rename columns
+        df.rename(columns={'_i_time': 'epoch_time'}, inplace=True)
 
         # drop empty columns
         df.dropna(inplace=True, how='all', axis='columns')
