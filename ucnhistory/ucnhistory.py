@@ -7,6 +7,7 @@ from dateutil.parser import parse as dparse
 import pandas as pd
 import keyring
 from sshtunnel import SSHTunnelForwarder
+import time
 
 class ucnhistory(object):
     """Connect to database and fetch data from midas history tables based on
@@ -96,20 +97,27 @@ class ucnhistory(object):
         self._connector.close()
         self._tunnel.stop()
 
-    def get_columns(self, table):
+    def get_columns(self, table, _reconnect=True):
         """Get a list of the columns in a given table
 
         Args:
             table (str): name of table for which to get the columns
+            _reconnect (bool): if true connect to server then disconnect at end
 
         Returns:
             list: list of column names (str)
         """
+
         database = self.sql_config['database']
-        self._connect()
+
+        if _reconnect:
+            self._connect()
         cur = self._connector.cursor()
         cur.execute(f"SHOW COLUMNS FROM {database}.{table}")
-        self._disconnect()
+
+        if _reconnect:
+            self._disconnect()
+
         return [c[0] for c in cur.fetchall()]
 
     def get_data(self, table, columns=None, start=None, stop=None):
@@ -163,10 +171,14 @@ class ucnhistory(object):
                 f"_i_time >= {epoch1} and _i_time < {epoch2}", self._connector)
         self._disconnect()
 
+        # check data
+        if len(df) == 0:
+            raise IOError(f'No data found in {database}.{table}')
+
         # rename columns
         df.rename(columns={'_i_time': 'epoch_time'}, inplace=True)
 
-        # drop empty columns
+        # drop fully empty columns
         df.dropna(inplace=True, how='all', axis='columns')
 
         # drop time columns

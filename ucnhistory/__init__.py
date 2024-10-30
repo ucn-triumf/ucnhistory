@@ -1,4 +1,5 @@
 from .ucnhistory import ucnhistory
+from .search import search
 from argparse import ArgumentParser
 import os
 import datetime
