@@ -246,7 +246,7 @@ class ucnhistory(object):
                     
         # if not then just try to fetch
         else:
-            data = self.get_data(*p, start, stop)
+            data = self.get_data(**path, start=start, stop=stop)
             
         # check that data is found
         if data is None:
