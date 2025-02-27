@@ -6,14 +6,15 @@
 
 - [ucnhistory](#ucnhistory)
   - [ucnhistory](#ucnhistory-1)
-    - [ucnhistory.get\_columns](#ucnhistoryget_columns)
-    - [ucnhistory.get\_data](#ucnhistoryget_data)
-    - [ucnhistory.get\_tables](#ucnhistoryget_tables)
-    - [ucnhistory.to\_csv](#ucnhistoryto_csv)
+    - [ucnhistory().get_columns](#ucnhistory.get_columns)
+    - [ucnhistory().get_data](#ucnhistory.get_data)
+    - [ucnhistory().get_tables](#ucnhistory.get_tables)
+    - [ucnhistory().search_data](#ucnhistory.search_data)
+    - [ucnhistory().to_csv](#ucnhistory.to_csv)
 
 ## ucnhistory
 
-[Show source in ucnhistory.py:12](../../ucnhistory/ucnhistory.py#L12)
+[Show source in ucnhistory.py:13](../../ucnhistory/ucnhistory.py#L13)
 
 Connect to database and fetch data from midas history tables based on
 timestamps.
@@ -57,13 +58,14 @@ class ucnhistory(object):
 
 ### ucnhistory.get_columns
 
-[Show source in ucnhistory.py:91](../../ucnhistory/ucnhistory.py#L91)
+[Show source in ucnhistory.py:101](../../ucnhistory/ucnhistory.py#L101)
 
 Get a list of the columns in a given table
 
 #### Arguments
 
 - `table` *str* - name of table for which to get the columns
+- `_reconnect` *bool* - if true connect to server then disconnect at end
 
 #### Returns
 
@@ -72,12 +74,12 @@ Get a list of the columns in a given table
 #### Signature
 
 ```python
-def get_columns(self, table): ...
+def get_columns(self, table, _reconnect=True): ...
 ```
 
 ### ucnhistory.get_data
 
-[Show source in ucnhistory.py:107](../../ucnhistory/ucnhistory.py#L107)
+[Show source in ucnhistory.py:124](../../ucnhistory/ucnhistory.py#L124)
 
 Get data form the data base.
 
@@ -100,7 +102,7 @@ def get_data(self, table, columns=None, start=None, stop=None): ...
 
 ### ucnhistory.get_tables
 
-[Show source in ucnhistory.py:187](../../ucnhistory/ucnhistory.py#L187)
+[Show source in ucnhistory.py:199](../../ucnhistory/ucnhistory.py#L199)
 
 Get a list of all the tables in the database
 
@@ -115,9 +117,29 @@ database
 def get_tables(self): ...
 ```
 
+### ucnhistory.search_data
+
+[Show source in ucnhistory.py:220](../../ucnhistory/ucnhistory.py#L220)
+
+Search for table and column name and get the data right away.
+
+Args:
+    name (str): name of the quantity
+    start (str): start time in any format, if none fetch past 24h
+    stop (str): end time in any format, if none fetch until now
+
+Returns:
+    pd.DataFrame: data fetched
+
+#### Signature
+
+```python
+def search_data(self, name, start, stop, rename_column=True): ...
+```
+
 ### ucnhistory.to_csv
 
-[Show source in ucnhistory.py:208](../../ucnhistory/ucnhistory.py#L208)
+[Show source in ucnhistory.py:261](../../ucnhistory/ucnhistory.py#L261)
 
 Write dataframe to csv
 
