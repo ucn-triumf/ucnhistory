@@ -8,6 +8,7 @@ import pandas as pd
 import keyring
 from sshtunnel import SSHTunnelForwarder
 import time
+import ucnhistory as uhist
 
 class ucnhistory(object):
     """Connect to database and fetch data from midas history tables based on
@@ -215,6 +216,47 @@ class ucnhistory(object):
         self._disconnect()
 
         return sorted(tables)
+        
+    def search_data(self, name, start, stop, rename_column=True):
+        """Search for table and column name and get the data right away. 
+        
+        Args: 
+            name (str): name of the quantity
+            start (str): start time in any format, if none fetch past 24h
+            stop (str): end time in any format, if none fetch until now
+
+        Returns: 
+            pd.DataFrame: data fetched
+        """
+        
+        # apply search
+        path = uhist.search(name)
+        
+        # if multitable, look for the one that works
+        data = None
+        if type(path) is list:
+            for p in path:
+                try:
+                    data = self.get_data(**p, start=start, stop=stop)
+                except OSError as err:
+                    pass
+                else:
+                    path = p
+                    break
+                    
+        # if not then just try to fetch
+        else:
+            data = self.get_data(*p, start, stop)
+            
+        # check that data is found
+        if data is None:
+            raise RuntimeError(f'Good data not found! Paths: {path}')
+            
+        # rename the column
+        if rename_column:
+            data = data.rename(columns={path['columns'][0]:name})
+            
+        return data
 
     def to_csv(self, filename):
         """Write dataframe to csv

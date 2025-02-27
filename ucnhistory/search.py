@@ -2,9 +2,9 @@
 # Derek Fujimoto
 # Oct 2024
 from tqdm import tqdm
-from .ucnhistory import ucnhistory
+import ucnhistory
 
-hist = ucnhistory()
+hist = ucnhistory.ucnhistory()
 
 names = {}
 
