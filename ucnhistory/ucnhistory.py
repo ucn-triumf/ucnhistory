@@ -9,6 +9,7 @@ import keyring
 from sshtunnel import SSHTunnelForwarder
 import time
 import ucnhistory as uhist
+import numpy as np
 
 class ucnhistory(object):
     """Connect to database and fetch data from midas history tables based on
@@ -217,7 +218,7 @@ class ucnhistory(object):
 
         return sorted(tables)
         
-    def search_data(self, name, start, stop, rename_column=True):
+    def search_data(self, name, start=None, stop=None, rename_column=True):
         """Search for table and column name and get the data right away. 
         
         Args: 
@@ -228,6 +229,13 @@ class ucnhistory(object):
         Returns: 
             pd.DataFrame: data fetched
         """
+        
+        # search with lists
+        if isinstance(name, (list, tuple, np.ndarray)):
+            dflist = [self.search_data(n, start, stop, rename_column) for n in name]
+            df = pd.concat(dflist, axis='columns')
+            df.drop(columns='epoch_time', inplace=True)
+            return df
         
         # apply search
         path = uhist.search(name)
