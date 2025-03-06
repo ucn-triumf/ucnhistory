@@ -2,7 +2,10 @@
 
 Fetch UCN history measurements from SQL database on `daq01.ucn.triumf.ca` as a pandas DataFrame. Allows for user-friendly timestamp input and write table to csv.
 
-## Installation
+Quick Links:
+* [Installation and Setup](Installation-and-Setup)
+
+## Installation and Setup
 
 Clone and install by the following
 
@@ -13,6 +16,37 @@ pip install .
 ```
 
 which will install the files on the user's python path. One can then import the package from anywhere on the device.
+
+### Database access
+
+Note that access to the database requires the use of a password. This password should be stored in the python keyring in the following way:
+
+```python
+import keyring
+keyring.set_password("ucn_history", "ucn_reader", password)
+```
+
+The password should be obtained from someone within the group. Some issues with the keyring may exist for WSL usage. You may need to run the following before trying to set the password:
+
+```bash
+pip install keyrings.alt
+```
+
+### SSH access
+
+Access to the DAQ computer is provided by mean of an SSH tunnel. First ensure that you have an ssh key present. If you run the command:
+```bash
+ls ~/.ssh
+```
+it should return a list of files, which should include something like `id_rsa` or `id_dsa` or similar. If file like this does not exist run the command
+```
+ssh-keygen
+```
+and follow the prompts (leave the password blank). Once you are certain you have an ssh public key you should copy it to daq01 for password-less access to the machine.
+
+```bash
+ssh-copy-id ucn@daq01.ucn.triumf.ca
+```
 
 ## Documentation and Examples
 
@@ -59,23 +93,3 @@ ucnhistory -lc -t ucn2epics_measured
 ucnhistory -t ucn2epics_measured -s 'June 6 2024 12pm' -e 'June 6 2024 1pm'
 ```
 
-## Notes
-
-### Database access
-
-Note that access to the database requires the use of a password. This password should be stored in the python keyring in the following way:
-
-```python
-import keyring
-keyring.set_password("ucn_history", "ucn_reader", password)
-```
-
-The password should be obtained from someone within the group.
-
-### SSH access
-
-Access to the DAQ computer is provided by mean of an SSH tunnel. One should copy their public key for password-less access to the machine.
-
-```bash
-ssh-copy-id ucn@daq01.ucn.triumf.ca
-```
