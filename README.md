@@ -5,6 +5,7 @@ Fetch UCN history measurements from SQL database on `daq01.ucn.triumf.ca` as a p
 Quick Links:
 * [Installation and Setup](#installation-and-setup)
 * [Documentation and Examples](#documentation-and-examples)
+    * [Reference](docs/ucnhistory/ucnhistory.md)
     * [Command line example](#command-line-usage)
     * [Python example](#python-example)
 
