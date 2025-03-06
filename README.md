@@ -3,7 +3,7 @@
 Fetch UCN history measurements from SQL database on `daq01.ucn.triumf.ca` as a pandas DataFrame. Allows for user-friendly timestamp input and write table to csv.
 
 Quick Links:
-* [Installation and Setup](Installation-and-Setup)
+* [Installation and Setup](#installation-and-setup)
 
 ## Installation and Setup
 
