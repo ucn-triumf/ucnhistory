@@ -4,6 +4,9 @@ Fetch UCN history measurements from SQL database on `daq01.ucn.triumf.ca` as a p
 
 Quick Links:
 * [Installation and Setup](#installation-and-setup)
+* [Documentation and Examples](#documentation-and-examples)
+    * [Command line example](#command-line-usage)
+    * [Python example](#python-example)
 
 ## Installation and Setup
 
@@ -50,7 +53,7 @@ ssh-copy-id ucn@daq01.ucn.triumf.ca
 
 ## Documentation and Examples
 
-### [See here for reference](docs/ucnhistory/ucnhistory.md)
+### [See here for reference](docs/ucnhistory/index.md)
 
 ### Command line usage:
 
@@ -92,4 +95,30 @@ ucnhistory -lc -t ucn2epics_measured
 # get one table for a specified time period
 ucnhistory -t ucn2epics_measured -s 'June 6 2024 12pm' -e 'June 6 2024 1pm'
 ```
+
+### Python Example
+
+The easiest thing is to use the [`search_data`](docs/ucnhistory/ucnhistory.md#ucnhistorysearch_data) function:
+
+```python
+from ucnhistory import ucnhistory
+
+# initialize the object
+h = ucnhistory()
+
+# lets load some level probe data and a temperature
+# command is case-insensitive
+
+# default is to fetch past 24H
+df = h.search_data(['TS112', 'lvl204', 'LvL203'])
+
+# now lets fetch from a specific date range
+# insensitive to specifics of the date and time formats
+df = h.search_data(['TS112', 'lvl204', 'LvL203'],
+                   start = 'Mar 5, 1pm 2025',
+                   stop = '2025/03/05 14:00'
+)
+```
+
+
 
