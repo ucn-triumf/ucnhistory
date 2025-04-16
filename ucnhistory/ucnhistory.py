@@ -142,8 +142,11 @@ class ucnhistory(object):
             columns = [columns]
 
         # convert input to datetime
-        date1 = self._date_parser(start)
-        date2 = self._date_parser(stop)
+        if isinstance(start, datetime.datetime): date1 = start
+        else:                                    date1 = self._date_parser(start)
+
+        if isinstance(stop, datetime.datetime):  date2 = stop
+        else:                                    date2 = self._date_parser(stop)
 
         # get epoch times
         epoch1 = int(date1.timestamp())
@@ -217,29 +220,29 @@ class ucnhistory(object):
         self._disconnect()
 
         return sorted(tables)
-        
+
     def search_data(self, name, start=None, stop=None, rename_column=True):
-        """Search for table and column name and get the data right away. 
-        
-        Args: 
+        """Search for table and column name and get the data right away.
+
+        Args:
             name (str): name of the quantity
             start (str): start time in any format, if none fetch past 24h
             stop (str): end time in any format, if none fetch until now
 
-        Returns: 
+        Returns:
             pd.DataFrame: data fetched
         """
-        
+
         # search with lists
         if isinstance(name, (list, tuple, np.ndarray)):
             dflist = [self.search_data(n, start, stop, rename_column) for n in name]
             df = pd.concat(dflist, axis='columns')
             df.drop(columns='epoch_time', inplace=True)
             return df
-        
+
         # apply search
         path = uhist.search(name)
-        
+
         # if multitable, look for the one that works
         data = None
         if type(path) is list:
@@ -251,19 +254,19 @@ class ucnhistory(object):
                 else:
                     path = p
                     break
-                    
+
         # if not then just try to fetch
         else:
             data = self.get_data(**path, start=start, stop=stop)
-            
+
         # check that data is found
         if data is None:
             raise RuntimeError(f'Good data not found! Paths: {path}')
-            
+
         # rename the column
         if rename_column:
             data = data.rename(columns={path['columns'][0]:name})
-            
+
         return data
 
     def to_csv(self, filename):
