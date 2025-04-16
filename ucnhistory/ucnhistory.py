@@ -142,11 +142,11 @@ class ucnhistory(object):
             columns = [columns]
 
         # convert input to datetime
-        if isinstance(start, datetime.datetime): date1 = start
-        else:                                    date1 = self._date_parser(start)
+        if isinstance(start, datetime): date1 = start
+        else:                           date1 = self._date_parser(start)
 
-        if isinstance(stop, datetime.datetime):  date2 = stop
-        else:                                    date2 = self._date_parser(stop)
+        if isinstance(stop, datetime):  date2 = stop
+        else:                           date2 = self._date_parser(stop)
 
         # get epoch times
         epoch1 = int(date1.timestamp())
